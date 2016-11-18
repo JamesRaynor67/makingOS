@@ -57,7 +57,8 @@ void HariMain(void)
 		io_hlt();
 	}
 	
-	/* Extremly strange that 'true' is not legal here. And use this method cause flash screen
+	/* Extremly strange that 'true' is not legal here.
+	   And the reason is that before C99, ture/false are not build-in types
 	while(1){
 		boxfill8(vram, xsize, COL8_008484,  0,         0,          xsize -  1, ysize - 29);
 		boxfill8(vram, xsize, COL8_C6C6C6,  0,         ysize - 28, xsize -  1, ysize - 28);
@@ -82,27 +83,27 @@ void HariMain(void)
 void init_palette(void)
 {
 	static unsigned char table_rgb[16 * 3] = {
-		0x00, 0x00, 0x00,	/*  0:• */
-		0xff, 0x00, 0x00,	/*  1:–¾‚é‚¢Ô */
-		0x00, 0xff, 0x00,	/*  2:–¾‚é‚¢—Î */
-		0xff, 0xff, 0x00,	/*  3:–¾‚é‚¢‰©F */
-		0x00, 0x00, 0xff,	/*  4:–¾‚é‚¢Â */
-		0xff, 0x00, 0xff,	/*  5:–¾‚é‚¢‡ */
-		0x00, 0xff, 0xff,	/*  6:–¾‚é‚¢…F */
-		0xff, 0xff, 0xff,	/*  7:”’ */
-		0xc6, 0xc6, 0xc6,	/*  8:–¾‚é‚¢ŠDF */
-		0x84, 0x00, 0x00,	/*  9:ˆÃ‚¢Ô */
-		0x00, 0x84, 0x00,	/* 10:ˆÃ‚¢—Î */
-		0x84, 0x84, 0x00,	/* 11:ˆÃ‚¢‰©F */
-		0x00, 0x00, 0x84,	/* 12:ˆÃ‚¢Â */
-		0x84, 0x00, 0x84,	/* 13:ˆÃ‚¢‡ */
-		0x00, 0x84, 0x84,	/* 14:ˆÃ‚¢…F */
-		0x84, 0x84, 0x84	/* 15:ˆÃ‚¢ŠDF */
+		0x00, 0x00, 0x00,	/*  0:é»’ */
+		0xff, 0x00, 0x00,	/*  1:æ˜ã‚‹ã„èµ¤ */
+		0x00, 0xff, 0x00,	/*  2:æ˜ã‚‹ã„ç·‘ */
+		0xff, 0xff, 0x00,	/*  3:æ˜ã‚‹ã„é»„è‰² */
+		0x00, 0x00, 0xff,	/*  4:æ˜ã‚‹ã„é’ */
+		0xff, 0x00, 0xff,	/*  5:æ˜ã‚‹ã„ç´« */
+		0x00, 0xff, 0xff,	/*  6:æ˜ã‚‹ã„æ°´è‰² */
+		0xff, 0xff, 0xff,	/*  7:ç™½ */
+		0xc6, 0xc6, 0xc6,	/*  8:æ˜ã‚‹ã„ç°è‰² */
+		0x84, 0x00, 0x00,	/*  9:æš—ã„èµ¤ */
+		0x00, 0x84, 0x00,	/* 10:æš—ã„ç·‘ */
+		0x84, 0x84, 0x00,	/* 11:æš—ã„é»„è‰² */
+		0x00, 0x00, 0x84,	/* 12:æš—ã„é’ */
+		0x84, 0x00, 0x84,	/* 13:æš—ã„ç´« */
+		0x00, 0x84, 0x84,	/* 14:æš—ã„æ°´è‰² */
+		0x84, 0x84, 0x84	/* 15:æš—ã„ç°è‰² */
 	};
 	set_palette(0, 15, table_rgb);
 	return;
 
-	/* static char –½—ß‚ÍAƒf[ƒ^‚É‚µ‚©g‚¦‚È‚¢‚¯‚ÇDB–½—ß‘Š“– */
+	/* static char å‘½ä»¤ã¯ã€ãƒ‡ãƒ¼ã‚¿ã«ã—ã‹ä½¿ãˆãªã„ã‘ã©DBå‘½ä»¤ç›¸å½“ */
 }
 
 void set_palette(int start, int end, unsigned char *rgb)
@@ -110,7 +111,8 @@ void set_palette(int start, int end, unsigned char *rgb)
 	int i, eflags;
 	eflags = io_load_eflags();	/* save flag's values */
 	/* disable interruption*/
-	/* it should be enabled in the end of this function, but not, PROBLEM 0x0000 */
+	/* It should be enabled in the end of this function, but not, PROBLEM 0x0000 */
+	/* I think this is a flaw.*/
 	io_cli();
 	
 	io_out8(0x03c8, start);
